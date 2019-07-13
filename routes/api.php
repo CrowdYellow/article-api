@@ -8,9 +8,8 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api'
 ], function($api) {
     // 测试路由
-    $api->get('verificationCodes', function () {
-        return response('verificationCodes');
-    });
+    $api->get('/captcha', 'CaptchaController@getCaptcha');
+    $api->post('/register', 'RegisterController@register');
 });
 
 $api->version('v2', function($api) {
