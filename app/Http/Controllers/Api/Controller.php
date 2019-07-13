@@ -9,4 +9,15 @@ use App\Http\Controllers\Controller as BaseController;
 class Controller extends BaseController
 {
     use Helpers;
+
+    public function data($code, string $msg, $data = null)
+    {
+        $info = [
+            'status'  => $code,
+            'message' => $msg,
+            'data'    => $data,
+        ];
+
+        return $this->response->array($info);
+    }
 }
