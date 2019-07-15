@@ -58,6 +58,8 @@ $api->version('v1', [
         $api->get('vote/{id}/comment', 'CommentsController@hasVoteThisComment');
         // 评论点赞
         $api->post('comment/{id}/vote', 'CommentsController@vote');
+        // 消息通知
+        $api->get('notifications', 'NotificationsController@index');
     });
 });
 
