@@ -96,4 +96,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->followers()->toggle($user);
     }
+
+    /**
+     * 文章
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
