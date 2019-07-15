@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class ArticleRequest extends FormRequest
 {
     public function rules()
@@ -18,8 +16,11 @@ class ArticleRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.min' => '标题必须至少两个字符',
-            'body.min'  => '文章内容必须至少三个字符',
+            'title.required'       => '标题必填',
+            'title.min'            => '标题必须至少两个字符',
+            'body.required'        => '文章内容必填',
+            'category_id.required' => '分类必选',
+            'body.min'             => '文章内容必须至少三个字符',
         ];
     }
 }

@@ -57,4 +57,21 @@ class ArticlesController extends Controller
 
         return $this->data(config('code.success'), 'success', ['id' => $article->id]);
     }
+
+    public function update(ArticleRequest $request, $id)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $article = Article::find($id);
+
+        if ($user->isAuthorOf($article)) {
+            $article->category_id = $request->category_id;
+            $article->title       = $request->title;
+            $article->body        = $request->body;
+            $article->save();
+            return $this->data(config('code.success'), '修改成功', ['id' => $article->id]);
+        }
+        return $this->data(config('code.refuse_err'), '你无权修改');
+    }
 }
