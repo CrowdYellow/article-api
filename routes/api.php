@@ -22,6 +22,10 @@ $api->version('v1', [
         $api->get('user/followed/{id}', 'UsersFollowsController@hasFollowedThis');
         // 关注用户
         $api->post('user/followed/{id}', 'UsersFollowsController@followedThis');
+        // 用户的关注
+        $api->get('user/followed', 'UsersFollowsController@followed');
+        // 用户的粉丝
+        $api->get('user/follower', 'UsersFollowsController@follower');
     });
 });
 

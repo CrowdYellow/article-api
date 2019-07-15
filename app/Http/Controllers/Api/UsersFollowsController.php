@@ -7,6 +7,57 @@ use App\Notifications\UserFollow;
 
 class UsersFollowsController extends Controller
 {
+    public function transform(User $user)
+    {
+        return [
+            'id'              => $user->id,
+            'name'            => $user->name,
+            'phone'           => $user->phone,
+            'avatar'          => env('APP_URL').$user->avatar,
+            'introduction'    => $user->introduction,
+            'created_at'      => (string)$user->created_at,
+            'updated_at'      => (string)$user->updated_at,
+        ];
+    }
+
+    /**
+     * 关注列表
+     * @return mixed
+     */
+    public function followed()
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $users = $user->followers;
+
+        $data = [];
+        foreach ($users as $user) {
+            $data[] = $this->transform($user);
+        }
+
+        return $this->data(config('code.success'), 'success', $data);
+    }
+
+    /**
+     * 粉丝列表
+     * @return mixed
+     */
+    public function follower()
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $users = $user->followersUser;
+
+        $data = [];
+        foreach ($users as $user) {
+            $data[] = $this->transform($user);
+        }
+
+        return $this->data(config('code.success'), 'success', $data);
+    }
+
     /**
      * 检查用户是否关注某个用户
      * @param $user
