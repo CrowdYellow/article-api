@@ -111,6 +111,23 @@ class ArticlesController extends Controller
         return $this->data(config('code.refuse_err'), '你无权删除');
     }
 
+    public function hasVotedThisArticle($id)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        if ($user->hasVotedThisArticle($id)) {
+            $data = [
+                'voted' => true,
+            ];
+            return $this->data(config('code.success'), '已点赞', $data);
+        }
+        $data = [
+            'voted' => false,
+        ];
+        return $this->data(config('code.success'), '没有点赞', $data);
+    }
+
     /**
      * 文章点赞
      * @param $id

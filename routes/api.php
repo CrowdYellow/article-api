@@ -44,6 +44,8 @@ $api->version('v1', [
         $api->patch('articles/{id}', 'ArticlesController@update');
         // 删除文章
         $api->delete('articles/{id}', 'ArticlesController@destroy');
+        // 是否点赞
+        $api->get('vote/{id}/article', 'ArticlesController@hasVotedThisArticle');
         // 文章点赞
         $api->post('article/{id}/vote', 'ArticlesController@vote');
     });
