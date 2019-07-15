@@ -144,6 +144,44 @@ class User extends Authenticatable implements JWTSubject
         return $this->articleVotes()->toggle($article);
     }
 
+    /**
+     * 用户的评论
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * 评论点赞
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function commentVotes()
+    {
+        return $this->belongsToMany(Comment::class, 'comment_votes')->withTimestamps();
+    }
+
+    /**
+     * 是否已点赞
+     * @param $comment
+     * @return bool
+     */
+    public function hasVotedThisComment($comment)
+    {
+        return !!$this->commentVotes()->where('comment_id', $comment)->count();
+    }
+
+    /**
+     * 评论点赞 取消点赞
+     * @param $comment
+     * @return array
+     */
+    public function votedThisComment($comment)
+    {
+        return $this->commentVotes()->toggle($comment);
+    }
+
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;

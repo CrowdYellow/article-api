@@ -16,6 +16,11 @@ class CommentsController extends Controller
         $this->commentTransformer = $commentTransformer;
     }
 
+    /**
+     * 评论列表
+     * @param $id
+     * @return mixed
+     */
     public function getCommentsBy($id)
     {
         $comments = Comment::where('article_id', $id)->orderBy('created_at', 'asc')->paginate(20);
@@ -26,6 +31,11 @@ class CommentsController extends Controller
         return $this->data(config('code.success'), 'success', $data);
     }
 
+    /**
+     * 创建评论
+     * @param CommentRequest $request
+     * @return mixed
+     */
     public function store(CommentRequest $request)
     {
         // 当前用户
@@ -49,6 +59,11 @@ class CommentsController extends Controller
         return $this->data(config('code.success'), '创建成功！');
     }
 
+    /**
+     * 删除评论
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         // 当前用户
@@ -66,5 +81,27 @@ class CommentsController extends Controller
         }
 
         return $this->data(config('code.refuse_err'), '你无权删除');
+    }
+
+    /**
+     * 是否点赞
+     * @param $id
+     * @return mixed
+     */
+    public function hasVoteThisComment($id)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        if ($user->hasVotedThisComment($id)) {
+            $data = [
+                'voted' => true,
+            ];
+            return $this->data(config('code.success'), '已点赞', $data);
+        }
+        $data = [
+            'voted' => false,
+        ];
+        return $this->data(config('code.success'), '没有点赞', $data);
     }
 }
