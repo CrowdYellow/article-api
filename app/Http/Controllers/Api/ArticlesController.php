@@ -110,4 +110,34 @@ class ArticlesController extends Controller
 
         return $this->data(config('code.refuse_err'), '你无权删除');
     }
+
+    /**
+     * 文章点赞
+     * @param $id
+     * @return mixed
+     */
+    public function vote($id)
+    {
+        // 当前用户
+        $user = $this->user();
+        // 当前文章
+        $article = Article::find($id);
+
+        $voted = $user->votedThisArticle($id);
+
+        if (count($voted['attached']) > 0) {
+            $article->increment('good_count');
+            $data = [
+                'voted' => true,
+                'good_count' => $article->good_count
+            ];
+            return $this->data(config('code.success'), '成功点赞', $data);
+        }
+        $article->decrement('good_count');
+        $data = [
+            'voted' => false,
+            'good_count' => $article->good_count
+        ];
+        return $this->data(config('code.success'), '取消点赞', $data);
+    }
 }

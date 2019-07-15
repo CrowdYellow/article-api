@@ -115,6 +115,35 @@ class User extends Authenticatable implements JWTSubject
         $this->save();
     }
 
+    /**
+     * 文章的点赞
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function articleVotes()
+    {
+        return $this->belongsToMany(Article::class, 'article_votes')->withTimestamps();
+    }
+
+    /**
+     * 是否已点赞
+     * @param $article
+     * @return bool
+     */
+    public function hasVotedThisArticle($article)
+    {
+        return !!$this->articleVotes()->where('article_id', $article)->count();
+    }
+
+    /**
+     * 文章点赞 取消点赞
+     * @param $article
+     * @return array
+     */
+    public function votedThisArticle($article)
+    {
+        return $this->articleVotes()->toggle($article);
+    }
+
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;

@@ -8,17 +8,17 @@ $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api'
 ], function($api) {
     // 获取验证码
-    $api->get('/captcha', 'CaptchaController@getCaptcha');
+    $api->get('captcha', 'CaptchaController@getCaptcha');
     // 用户注册
-    $api->post('/register', 'RegisterController@register');
+    $api->post('register', 'RegisterController@register');
     // 用户登录
-    $api->post('/login', 'LoginController@login');
+    $api->post('login', 'LoginController@login');
     // 分类列表
-    $api->get('/categories', 'CategoryController@index');
+    $api->get('categories', 'CategoryController@index');
     // 文章列表
-    $api->get('/articles', 'ArticlesController@index');
+    $api->get('articles', 'ArticlesController@index');
     // 文章详情页
-    $api->get('/articles/{id}', 'ArticlesController@show');
+    $api->get('articles/{id}', 'ArticlesController@show');
 
     // 需要 token 验证的接口
     $api->group(['middleware' => 'api.auth'], function($api) {
@@ -39,11 +39,13 @@ $api->version('v1', [
         // 发送消息
         $api->post('user/messages/{id}', 'MessagesController@store');
         // 创建文章
-        $api->post('/article', 'ArticlesController@store');
+        $api->post('article', 'ArticlesController@store');
         // 编辑文章
-        $api->patch('/articles/{id}', 'ArticlesController@update');
+        $api->patch('articles/{id}', 'ArticlesController@update');
         // 删除文章
-        $api->delete('/articles/{id}', 'ArticlesController@destroy');
+        $api->delete('articles/{id}', 'ArticlesController@destroy');
+        // 文章点赞
+        $api->post('article/{id}/vote', 'ArticlesController@vote');
     });
 });
 
