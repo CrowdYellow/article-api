@@ -73,6 +73,8 @@ class MessagesController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
+        $messages->markAsRead();
+
         $data = [];
         foreach ($messages as $message) {
             $data[] = $this->messageTransformer->transform($message);

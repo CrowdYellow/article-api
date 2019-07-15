@@ -39,6 +39,17 @@ class Message extends Model
     }
 
     /**
+     * 利用 collection 将消息标记为已读
+     *
+     * @param array $models
+     * @return MessageCollection|\Illuminate\Database\Eloquent\Collection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new MessageCollection($models);
+    }
+
+    /**
      * 判断消息是否是已读
      * @return bool
      */
