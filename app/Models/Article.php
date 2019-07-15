@@ -25,4 +25,22 @@ class Article extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    /**
+     * 文章的所有评论
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * 更新文章评论数
+     */
+    public function updateCommentCount()
+    {
+        $this->comment_count = $this->comments->count();
+        $this->save();
+    }
 }
