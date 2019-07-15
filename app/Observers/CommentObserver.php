@@ -18,6 +18,6 @@ class CommentObserver
 
     public function deleted(Comment $comment)
     {
-        $comment->article->updateReplyCount();
+        $comment->article->updateCommentCount();
     }
 }

@@ -52,6 +52,8 @@ $api->version('v1', [
         $api->post('article/{id}/vote', 'ArticlesController@vote');
         // 创建评论
         $api->post('comment/create', 'CommentsController@store');
+        // 删除评论
+        $api->delete('comment/{id}', 'CommentsController@destroy');
     });
 });
 

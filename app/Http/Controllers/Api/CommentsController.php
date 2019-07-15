@@ -48,4 +48,23 @@ class CommentsController extends Controller
         $comment->save();
         return $this->data(config('code.success'), '创建成功！');
     }
+
+    public function destroy($id)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $comment = Comment::find($id);
+
+        if (empty($comment)) {
+            return $this->data(config('code.null'), '评论不存在');
+        }
+
+        if ($user->isAuthorOf($comment)) {
+            $comment->delete();
+            return $this->data(config('code.success'), '删除成功');
+        }
+
+        return $this->data(config('code.refuse_err'), '你无权删除');
+    }
 }
