@@ -55,7 +55,9 @@ $api->version('v1', [
         // 删除评论
         $api->delete('comment/{id}', 'CommentsController@destroy');
         // 是否点赞
-        $api->post('vote/{id}/comment', 'CommentsController@hasVoteThisComment');
+        $api->get('vote/{id}/comment', 'CommentsController@hasVoteThisComment');
+        // 评论点赞
+        $api->post('comment/{id}/vote', 'CommentsController@vote');
     });
 });
 

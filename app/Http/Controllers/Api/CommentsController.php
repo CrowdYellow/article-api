@@ -104,4 +104,34 @@ class CommentsController extends Controller
         ];
         return $this->data(config('code.success'), '没有点赞', $data);
     }
+
+    /**
+     * 评论点赞
+     * @param $id
+     * @return mixed
+     */
+    public function vote($id)
+    {
+        // 当前用户
+        $user = $this->user();
+        // 当前评论
+        $comment = Comment::find($id);
+
+        $voted = $user->votedThisComment($id);
+
+        if (count($voted['attached']) > 0) {
+            $comment->increment('good_count');
+            $data = [
+                'voted' => true,
+                'good_count' => $comment->good_count
+            ];
+            return $this->data(config('code.success'), '成功点赞', $data);
+        }
+        $comment->decrement('good_count');
+        $data = [
+            'voted' => false,
+            'good_count' => $comment->good_count
+        ];
+        return $this->data(config('code.success'), '取消点赞', $data);
+    }
 }
