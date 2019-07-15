@@ -32,4 +32,13 @@ class ArticlesController extends Controller
 
         return $this->data(config('code.success'), 'success', $data);
     }
+
+    public function show($id)
+    {
+        $article = Article::find($id);
+
+        $data = $this->articleTransformer->show($article);
+
+        return $this->data(config('code.success'), 'success', $data);
+    }
 }
