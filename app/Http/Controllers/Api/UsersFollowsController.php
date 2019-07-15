@@ -24,7 +24,7 @@ class UsersFollowsController extends Controller
         // 当前用户
         $user = $this->user();
 
-        $users = $user->followers;
+        $users = $user->followers()->paginate(10);
 
         $data = [];
         foreach ($users as $user) {
@@ -43,7 +43,7 @@ class UsersFollowsController extends Controller
         // 当前用户
         $user = $this->user();
 
-        $users = $user->followersUser;
+        $users = $user->followersUser()->paginate(10);
 
         $data = [];
         foreach ($users as $user) {
@@ -102,7 +102,7 @@ class UsersFollowsController extends Controller
             $currentUser->increment('follow_count');
 
             // 通知用户
-            $user->notify(new UserFollow($user));
+            $user->notify(new UserFollow($currentUser));
 
             return $this->data(200, '成功关注', ['followed' => true]);
         }
