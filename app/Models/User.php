@@ -106,6 +106,15 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Article::class);
     }
 
+    /**
+     * 文章数量
+     */
+    public function articlesCount()
+    {
+        $this->article_count = $this->articles->count();
+        $this->save();
+    }
+
     public function isAuthorOf($model)
     {
         return $this->id == $model->user_id;
