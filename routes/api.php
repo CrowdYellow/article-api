@@ -19,6 +19,8 @@ $api->version('v1', [
     $api->get('articles', 'ArticlesController@index');
     // 文章详情页
     $api->get('articles/{id}', 'ArticlesController@show');
+    // 评论列表
+    $api->get('comment/by/{id}', 'CommentsController@getCommentsBy');
 
     // 需要 token 验证的接口
     $api->group(['middleware' => 'api.auth'], function($api) {
