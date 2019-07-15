@@ -27,9 +27,12 @@ class MessagesController extends Controller
             ->orWhere('to_user_id', $user->id)
             ->get()
             ->groupBy('dialog_id');
+        // 消息列表
         $data     = [];
+        // 每个聊天者
         $account  = [];
         foreach ($messages as $messageGroup) {
+            // 判断最后发消息的人是不是当前用户
             if ($user->id == $messageGroup->last()->from_user_id) {
                 $account['user_id'] = $messageGroup->last()->to_user_id;
                 $account['name']    = $messageGroup->last()->toUser->name;
@@ -59,6 +62,7 @@ class MessagesController extends Controller
         // 当前用户
         $user = $this->user();
 
+        // 不能与自己私聊
         if ($id == $user->id) {
             return $this->data(config('code.refuse_err'), '调皮，不要自言自语！');
         }
@@ -67,12 +71,15 @@ class MessagesController extends Controller
 
         sort($arr);
 
+        // 获取对话id
         $dialog_id = (string)$arr[0] . $arr[1];
 
+        // 获取两个人的所有聊天记录
         $messages = Message::where('dialog_id', $dialog_id)
             ->orderBy('created_at', 'asc')
             ->get();
 
+        // 将消息变为已读状态
         $messages->markAsRead();
 
         $data = [];
