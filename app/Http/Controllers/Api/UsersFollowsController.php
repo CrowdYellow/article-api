@@ -4,20 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Notifications\UserFollow;
+use App\Transformers\UserTransformer;
 
 class UsersFollowsController extends Controller
 {
-    public function transform(User $user)
+    protected $userTransformer;
+
+    public function __construct(UserTransformer $userTransformer)
     {
-        return [
-            'id'              => $user->id,
-            'name'            => $user->name,
-            'phone'           => $user->phone,
-            'avatar'          => env('APP_URL').$user->avatar,
-            'introduction'    => $user->introduction,
-            'created_at'      => (string)$user->created_at,
-            'updated_at'      => (string)$user->updated_at,
-        ];
+        $this->userTransformer = $userTransformer;
     }
 
     /**
@@ -33,7 +28,7 @@ class UsersFollowsController extends Controller
 
         $data = [];
         foreach ($users as $user) {
-            $data[] = $this->transform($user);
+            $data[] = $this->userTransformer->transform($user);
         }
 
         return $this->data(config('code.success'), 'success', $data);
@@ -52,7 +47,7 @@ class UsersFollowsController extends Controller
 
         $data = [];
         foreach ($users as $user) {
-            $data[] = $this->transform($user);
+            $data[] = $this->userTransformer->transform($user);
         }
 
         return $this->data(config('code.success'), 'success', $data);
@@ -60,7 +55,7 @@ class UsersFollowsController extends Controller
 
     /**
      * 检查用户是否关注某个用户
-     * @param $user
+     * @param $id
      * @return mixed
      */
     public function hasFollowedThis($id)
