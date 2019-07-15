@@ -50,6 +50,8 @@ $api->version('v1', [
         $api->get('vote/{id}/article', 'ArticlesController@hasVotedThisArticle');
         // 文章点赞
         $api->post('article/{id}/vote', 'ArticlesController@vote');
+        // 创建评论
+        $api->post('comment/create', 'CommentsController@store');
     });
 });
 
