@@ -97,8 +97,10 @@ class UsersFollowsController extends Controller
         //判断执行的是添加还是删除操作
         if (count($followed['attached']) > 0) {
 
+            // 粉丝加一
             $user->increment('fans');
 
+            // 关注用户加一
             $currentUser->increment('follow_count');
 
             // 通知用户
