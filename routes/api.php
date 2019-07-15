@@ -26,6 +26,10 @@ $api->version('v1', [
         $api->get('user/followed', 'UsersFollowsController@followed');
         // 用户的粉丝
         $api->get('user/follower', 'UsersFollowsController@follower');
+        // 消息列表
+        $api->get('user/messages', 'MessagesController@index');
+        // 对话列表
+        $api->get('user/messages/{id}', 'MessagesController@chatWithUser');
     });
 });
 
