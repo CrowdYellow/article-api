@@ -13,6 +13,16 @@ $api->version('v1', [
     $api->post('/register', 'RegisterController@register');
     // 用户登录
     $api->post('/login', 'LoginController@login');
+
+    // 需要 token 验证的接口
+    $api->group(['middleware' => 'api.auth'], function($api) {
+        // 当前登录用户信息
+        $api->get('user', 'UsersController@me');
+        // 是否关注该用户
+        $api->get('user/followed/{id}', 'UsersFollowsController@hasFollowedThis');
+        // 关注用户
+        $api->post('user/followed/{id}', 'UsersFollowsController@followedThis');
+    });
 });
 
 $api->version('v2', function($api) {

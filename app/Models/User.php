@@ -56,4 +56,44 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * 用户的关注
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /**
+     * 用户的粉丝
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followersUser()
+    {
+        return $this->belongsToMany(self::class, 'user_follows', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * 判断用户是否关注该用户
+     * @param $user
+     * @return bool
+     */
+    public function hasFollowedThis($user)
+    {
+        return !!$this->followers()->where('followed_id', $user)->count();
+    }
+
+    /**
+     * 关注用户 取消关注
+     *
+     * @param $user
+     * @return array
+     */
+    public function followThisUser($user)
+    {
+        return $this->followers()->toggle($user);
+    }
 }
