@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\ArticleRequest;
 use App\Models\Article;
 use App\Transformers\ArticleTransformer;
 
@@ -40,5 +41,20 @@ class ArticlesController extends Controller
         $data = $this->articleTransformer->show($article);
 
         return $this->data(config('code.success'), 'success', $data);
+    }
+
+    public function store(ArticleRequest $request)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $article              = new Article();
+        $article->category_id = $request->category_id;
+        $article->user_id     = $user->id;
+        $article->title       = $request->title;
+        $article->body        = $request->body;
+        $article->save();
+
+        return $this->data(config('code.success'), 'success', ['id' => $article->id]);
     }
 }

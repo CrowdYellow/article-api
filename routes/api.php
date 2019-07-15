@@ -19,6 +19,8 @@ $api->version('v1', [
     $api->get('/articles', 'ArticlesController@index');
     // 文章详情页
     $api->get('/articles/{id}', 'ArticlesController@show');
+    // 创建文章
+    $api->post('/article', 'ArticlesController@store');
 
     // 需要 token 验证的接口
     $api->group(['middleware' => 'api.auth'], function($api) {
