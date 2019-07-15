@@ -30,6 +30,8 @@ $api->version('v1', [
         $api->get('user/messages', 'MessagesController@index');
         // 对话列表
         $api->get('user/messages/{id}', 'MessagesController@chatWithUser');
+        // 发送消息
+        $api->post('user/messages/{id}', 'MessagesController@store');
     });
 });
 

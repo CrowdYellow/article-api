@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Api\MessageRequest;
 use App\Models\Message;
 use App\Transformers\MessageTransformer;
+use Illuminate\Http\Request;
 
 class MessagesController extends Controller
 {
@@ -88,5 +90,27 @@ class MessagesController extends Controller
         }
 
         return $this->data(config('code.success'), 'success', $data);
+    }
+
+    public function store(MessageRequest $request, $id)
+    {
+        // 当前用户
+        $user = $this->user();
+
+        $arr = [$user->id, $id];
+
+        sort($arr);
+
+        // 获取对话id
+        $dialog_id = (string)$arr[0] . $arr[1];
+
+        $message               = new Message();
+        $message->to_user_id   = $id;
+        $message->from_user_id = $user->id;
+        $message->body         = $request->body;
+        $message->dialog_id    = $dialog_id;
+        $message->save();
+
+        return $this->data(config('code.success'), 'success');
     }
 }
